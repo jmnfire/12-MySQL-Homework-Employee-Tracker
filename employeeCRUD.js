@@ -2,6 +2,8 @@ const mysql = require('mysql');
 const inquirer = require('inquirer');
 require('console.table');
 
+var figlet = require('figlet');
+
 const connection = mysql.createConnection({
     host: 'localhost',
 
@@ -17,6 +19,15 @@ const connection = mysql.createConnection({
 });
 
 
+figlet('Employee Tracker', function (err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+    console.log(data)
+});
+
 
 const start = () => {
     inquirer
@@ -28,7 +39,6 @@ const start = () => {
                 'View all Employees',
                 'View all Employees by Department',
                 'View all Employees by Role',
-                'View all Employees by Manager',
                 'Add Employee',
                 'Add Department',
                 'Add Role',
@@ -99,7 +109,7 @@ const employeeSearch = () => {
     connection.query('SELECT * FROM employee', (err, res) => {
         if (err) throw err;
         console.table('All Employees:', res);
-        connection.end();
+        start();
     });
 };
 
@@ -112,7 +122,7 @@ const departmentSearch = () => {
     connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
         console.table('All Departments:', res);
-        connection.end();
+        start();
     });
 }
 
@@ -123,7 +133,7 @@ const roleSearch = () => {
     connection.query('SELECT * FROM empRole', (err, res) => {
         if (err) throw err;
         console.table('All Roles:', res);
-        connection.end();
+        start();
     });
 }
 
@@ -218,22 +228,22 @@ const addRole = () => {
         if (err) throw err;
         inquirer
             .prompt([{
-                name: 'title',
-                type: 'input',
-                message: "What Employee role would you like to add? ",
-            }, 
-            {
-                name: 'salary',
-                type: 'input',
-                message: "What is the salary would you like to add to this role? ",
-            }, 
-            {
-                name: 'department_id',
-                type: 'input',
-                message: "What is the department id for this role? ",
-            }, 
-        
-        ]).then(function (answer) {
+                    name: 'title',
+                    type: 'input',
+                    message: "What Employee role would you like to add? ",
+                },
+                {
+                    name: 'salary',
+                    type: 'input',
+                    message: "What is the salary would you like to add to this role? ",
+                },
+                {
+                    name: 'department_id',
+                    type: 'input',
+                    message: "What is the department id for this role? ",
+                },
+
+            ]).then(function (answer) {
                 connection.query(
                     'INSERT INTO empRole SET ?', {
                         title: answer.title,
@@ -252,6 +262,9 @@ const addRole = () => {
 
 
 /////////////////========================= 5."Update Employee Role"
+
+
+
 
 
 /////////////////========================= 5."Delete Employee"
