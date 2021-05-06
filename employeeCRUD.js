@@ -87,7 +87,7 @@ const start = () => {
                     break;
 
                 case 'Remove Employee':
-                    addDepartment();
+                    removeEmployee();
                     break;
 
                 case 'Exit':
@@ -130,7 +130,7 @@ const departmentSearch = () => {
 
 const roleSearch = () => {
     console.log('Selecting all roles...\n');
-    connection.query('SELECT * FROM empRole', (err, res) => {
+    connection.query('SELECT * FROM role', (err, res) => {
         if (err) throw err;
         console.table('All Roles:', res);
         start();
@@ -140,7 +140,7 @@ const roleSearch = () => {
 /////////////////========================= 4."Add a New Employee"
 
 const addEmployee = () => {
-    connection.query('SELECT * FROM empRole', function (err, res) {
+    connection.query('SELECT * FROM role', function (err, res) {
         if (err) throw err;
         inquirer
             .prompt([{
@@ -224,7 +224,7 @@ const addDepartment = () => {
 /////////////////========================= 4."Add a New Role
 
 const addRole = () => {
-    connection.query('SELECT * FROM empRole', function (err, res) {
+    connection.query('SELECT * FROM role', function (err, res) {
         if (err) throw err;
         inquirer
             .prompt([{
@@ -245,7 +245,7 @@ const addRole = () => {
 
             ]).then(function (answer) {
                 connection.query(
-                    'INSERT INTO empRole SET ?', {
+                    'INSERT INTO role SET ?', {
                         title: answer.title,
                         salary: answer.salary,
                         department_id: answer.department_id,
@@ -260,29 +260,24 @@ const addRole = () => {
 };
 
 
-
 /////////////////========================= 5."Update Employee Role"
-
-
-
 
 
 /////////////////========================= 5."Delete Employee"
 
-// const removeEmployee = () => {
-//     console.log('Deleting employee...\n');
-//     connection.query(
-//       'DELETE FROM employee WHERE ?',
-//       {
-//         first_name: 'Jovan',
-//       },
-//       (err, res) => {
-//         if (err) throw err;
-//         console.log(`${res.affectedRows} employee deleted!\n`);
-//         start();
-//       }
-//     );
-//   };
+const removeEmployee = () => {
+    console.log('Deleting employee...\n');
+    connection.query(
+        'DELETE FROM employee WHERE ?', {
+            first_name: 'Jovan',
+        },
+        (err, res) => {
+            if (err) throw err;
+            console.log(`${res.affectedRows} employee deleted!\n`);
+            start();
+        }
+    );
+};
 
 
 connection.connect((err) => {
