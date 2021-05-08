@@ -223,7 +223,7 @@ const addDepartment = () => {
 
 /////////////////========================= 4."Add a New Role
 
-const addRole = () => {
+const updateRole = () => {
     connection.query('SELECT * FROM role', function (err, res) {
         if (err) throw err;
         inquirer
@@ -261,6 +261,51 @@ const addRole = () => {
 
 
 /////////////////========================= 5."Update Employee Role"
+
+const updateEmployee = () => {
+    connection.query('SELECT * FROM role', function (err, res) {
+        connection.query('SELECT * FROM department', function (err, response_dept) {
+            //this is equivalent to response_dept[i], i++, i< response_dept.length
+            let departments = response_dept.map((dept) => {
+                return {
+                    name: dept.name,
+                    value: dept.id
+                }
+            })
+            if (err) throw err;
+            inquirer
+                .prompt([{
+                        name: 'title',
+                        type: 'input',
+                        message: "What Employee title would you like to add? ",
+                    },
+                    {
+                        name: 'salary',
+                        type: 'input',
+                        message: "What salary would you like for this role? ",
+                    },
+                    {
+                        name: 'department_id',
+                        type: 'list',
+                        choices: departments,
+                        message: "What is the department for this role? ",
+                    },
+                ]).then(function (answer) {
+                    connection.query(
+                        'INSERT INTO role SET ?', {
+                            title: answer.title,
+                            salary: answer.salary,
+                            department_id: answer.department_id,
+                        },
+                        function (err) {
+                            if (err) throw err;
+                            console.log('Your new title has been added!');
+                            start();
+                        })
+                })
+        })
+    })
+};
 
 
 /////////////////========================= 5."Delete Employee"
