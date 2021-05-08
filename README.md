@@ -39,7 +39,7 @@ jovan.m.nixon@gmail.com
 
 # Demo
 ## Using application from the command line
-![Demo of README](./assets/Tracker1.gif)
+![Demo of README](./assets/Tracker2.gif)
 
 
 # Badges
